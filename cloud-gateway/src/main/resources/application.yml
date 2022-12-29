@@ -1,0 +1,36 @@
+server:
+  port: 9093
+spring:
+  h2:
+    console:
+      enabled: true
+  application:
+    name: GATEWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri:
+            lb://ORDER-SERVICE 
+          predicates:
+            - Path=/orderservice/api/**
+        - id: product-service
+          uri:
+            lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/productservice/api/**
+        - id: user-service
+          uri:
+            lb://USER-SERVICE
+          predicates:
+            - Path=/userservice/api/**
+        
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
